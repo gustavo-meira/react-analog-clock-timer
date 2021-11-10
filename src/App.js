@@ -31,7 +31,7 @@ class App extends Component {
   }
 
   startCount() {
-    const ONE_SECOND = 200;
+    const ONE_SECOND = 1000;
     this.setState({counting: true});
     this.countInterval = setInterval(() => {
       const { minutes, seconds } = this.state;
