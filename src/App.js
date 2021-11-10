@@ -3,6 +3,7 @@ import './App.css';
 import Clock from './components/Clock';
 import cucoSound from './assets/sounds/cuco-clock.mp3';
 import Swal from 'sweetalert2';
+import LabelInput from './components/LabelInput';
 
 class App extends Component {
   constructor() {
@@ -10,6 +11,7 @@ class App extends Component {
     this.state = {
       minutes: 0,
       seconds: 0,
+      counting: false,
       currentMinutes: 0,
       currentHours: 0,
       currentSeconds: 0,
@@ -30,6 +32,7 @@ class App extends Component {
 
   startCount() {
     const ONE_SECOND = 1000;
+    this.setState({counting: true});
     this.countInterval = setInterval(() => {
       const { minutes, seconds } = this.state;
       if (minutes === 0 && seconds === 0) {
@@ -45,8 +48,9 @@ class App extends Component {
 
   stopCounter() {
     clearInterval(this.countInterval);
-    const sound = new Audio(cucoSound);
-    sound.play();
+    clearInterval(this.ticTac);
+    const cucoAudio = new Audio(cucoSound);
+    cucoAudio.play();
     Swal.fire({
       imageUrl: 'https://c.tenor.com/mR3i-SxcBWQAAAAd/cuckoo-clock-cuckoo-bird.gif',
       imageAlt: 'Um passaro imitando um relógio cuco',
@@ -54,7 +58,7 @@ class App extends Component {
       text: 'Seu contador terminou!',
       timer: 8500,
     });
-    setTimeout(this.currentHour, 7000);
+    this.setState({counting: false});
   }
 
   componentDidMount() {
@@ -88,32 +92,37 @@ class App extends Component {
       currentMinutes,
       currentHours,
       currentSeconds,
+      counting,
     } = this.state;
-    const { handleInputChanges, timerInterval, startCount } = this;
+    const { handleInputChanges, timerInterval, startCount, currentHour } = this;
     return (
       <>
+        <h1>Relógio temporizador</h1>
         <Clock 
           seconds={timerInterval ? currentSeconds : seconds}
           minutes={timerInterval ? currentMinutes : minutes}
           hours={timerInterval ? currentHours : null}
         />
-        <input
-          type="number"
-          max="60"
-          min="0"
-          name="seconds"
-          value={seconds}
-          onChange={handleInputChanges}
-        />
-        <input
-          type="number"
-          max="60"
-          min="0"
-          name="minutes"
-          value={minutes}
-          onChange={handleInputChanges}
-        />
-        <button onClick={startCount}>Começar contagem!</button>
+        {counting ? <span className="remaining-time">{`Faltam ${minutes} minutos e ${seconds} segundos...`}</span> : (
+          <section className="inputs">
+            <LabelInput
+            name="seconds"
+            value={seconds}
+            callback={handleInputChanges}
+            label="Segundos:"
+            />
+            <LabelInput
+              name="minutes"
+              value={minutes}
+              callback={handleInputChanges}
+              label="Minutos:"
+            />
+          </section>
+        )}
+        <div className="start-button">
+          <button disabled={counting} onClick={startCount}>Começar contagem</button>
+          <button disabled={counting} onClick={currentHour}>Horario atual</button>
+        </div>
       </>
     );
   }

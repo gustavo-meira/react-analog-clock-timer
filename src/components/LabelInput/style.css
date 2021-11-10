@@ -1,0 +1,8 @@
+.label {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-user {
+  width: 100px;
+}

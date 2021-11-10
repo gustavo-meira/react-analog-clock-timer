@@ -1,0 +1,24 @@
+h1 {
+  text-align: center;
+}
+
+.inputs {
+  padding-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.remaining-time {
+  display: block;
+  text-align: center;
+  font-size: 22px;
+  padding-top: 40px;
+}
+
+.start-button {
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
