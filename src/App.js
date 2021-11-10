@@ -31,7 +31,7 @@ class App extends Component {
   }
 
   startCount() {
-    const ONE_SECOND = 1000;
+    const ONE_SECOND = 200;
     this.setState({counting: true});
     this.countInterval = setInterval(() => {
       const { minutes, seconds } = this.state;
@@ -48,7 +48,6 @@ class App extends Component {
 
   stopCounter() {
     clearInterval(this.countInterval);
-    clearInterval(this.ticTac);
     const cucoAudio = new Audio(cucoSound);
     cucoAudio.play();
     Swal.fire({
